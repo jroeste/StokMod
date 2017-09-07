@@ -1,6 +1,6 @@
 # StokMod
-Project about Stochastic Modelling. 
+3 Projects in Stochastic Modelling. 
 
-Problem 1: The Secretary Problem
-
-Problem 2: Avalance Problem
+1. project:
+  Problem 1: The Secretary Problem
+  Problem 2: Avalance Problem
