@@ -7,15 +7,15 @@ import random as rnd
 
 
 def plotBestCandidate(n):
-    k = np.linspace(1, n)
-    func1 = k / n * np.log(n / k)
+	k = np.linspace(1, n)
+	func1 = k / n * np.log(n / k)
 
-    plt.plot(k, func1, label=("n=", n))
-    plt.xlabel("Candidate number k")
-    plt.ylabel("Probability")
-    plt.title("Probability of best candidate")
-    plt.legend()
-    plt.grid()
+	plt.plot(k, func1, label=("n=", n))
+	plt.xlabel("Candidate number k")
+	plt.ylabel("Probability")
+	plt.title("Probability of best candidate")
+	plt.legend()
+	plt.grid()
 
 
 def secretary_problem_strategy(k, x_values):
@@ -62,4 +62,24 @@ def plotZ1_of_k_unknown_n():
     print("hei")
 
 
+def func(k,n): 
+	return k / n * np.log(n / k)
 
+def taskd():
+	k = np.linspace(1, 15, num=15)
+	func1 = np.zeros(15)
+	for n in range(16,30):
+		func1 = func1 + k / n * np.log(n / k)
+	plt.plot(k, func1, label=("P(Z=1)", n))
+	plt.xlabel("Candidate number k")
+	plt.ylabel("Probability")
+	plt.title("Probability of best candidate")
+	plt.legend()
+	plt.grid()
+	k_max = max(func1)
+	for i in range(15):
+		if func1[i] == k_max:
+			return i
+
+print(taskd())
+plt.show()
