@@ -15,16 +15,20 @@ def compute_marginal_probability(P, x0, n):
 		x[:,i + 1] = np.matmul(P, x[:,i]);
 	return x;
 
+def sample(p):
+	s = rnd.rand();
+	p_sample = [s, 1 - s];
+	return np.less(p_sample, p).astype(np.float64);
+
 def draw_realization(P, x0, n):
 	dim = len(x0);
-	x = np.zeros((dim, n));
+	r = np.zeros((dim, n));
 
-	x[:,0] = x0;
+	r[:,0] = sample(x0);
 	for i in range(0, n - 1):
-		tmp = rnd.rand();
-		p = [tmp, 1 - tmp];
-		x[:,i + 1] = np.less(p, np.matmul(P, x[:,i])).astype(np.float64);
-	return x;
+		p = np.matmul(P, r[:,i]);
+		r[:,i + 1] = sample(p);
+	return r;
 
 def test_marginal_probability():
 	P = [[0.95, 0.00], [0.05, 1]];
