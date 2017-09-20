@@ -10,7 +10,7 @@ def plotBestCandidate(n):
 	k = np.linspace(1, n)
 	func1 = k / n * np.log(n / k)
 
-	plt.plot(k, func1, label=("n=", n))
+	plt.plot(k, func1, label=("n = ", n))
 	plt.xlabel("Candidate number k")
 	plt.ylabel("Probability")
 	plt.title("Probability of best candidate")
@@ -28,7 +28,7 @@ def secretary_problem_strategy(k, x_values):
 
 def number_of_candidates_task1c(k, n, realizations, top_number):  # top_number = gives a candidate among the "top three" (top number)
     bestCandidateCounter = 0
-    top_three_counter = 0
+    top_number_counter = 0
     interview_all_counter = 0
     for i in range(realizations):
         x_values = rnd.sample(range(1, n + 1), n)  # makes a list with n unique values between 1 and n.
@@ -40,10 +40,9 @@ def number_of_candidates_task1c(k, n, realizations, top_number):  # top_number =
 
         elif strategy_index == x_values.index(max(x_values)):
             bestCandidateCounter += 1
-            top_three_counter += 1
+            top_number_counter += 1
 
         else:
-
             number = 0
             keep_on = True
             while (number < top_number and keep_on):  # test this with a short list.
@@ -51,35 +50,97 @@ def number_of_candidates_task1c(k, n, realizations, top_number):  # top_number =
                 x_values[x_values.index(max(x_values))] = -1
 
                 if strategy_index == x_values.index(max(x_values)):
-                    top_three_counter += 1
+                    top_number_counter += 1
 
                     keep_on = False
                     # stop the for-loop if the index is found.
 
-    return bestCandidateCounter, top_three_counter, interview_all_counter
+    return bestCandidateCounter, top_number_counter, interview_all_counter
 
 def plotZ1_of_k_unknown_n():
     print("hei")
 
 
-def func(k,n): 
-	return k / n * np.log(n / k)
-
-def taskd():
+def taskd1():
 	k = np.linspace(1, 15, num=15)
 	func1 = np.zeros(15)
-	for n in range(16,30):
-		func1 = func1 + k / n * np.log(n / k)
-	plt.plot(k, func1, label=("P(Z=1)", n))
+	for n in range(16,46):
+		func1 = func1 + k / (30*n) * np.log(n / k)
+	plt.plot(k, func1, label=("P(Z=1)"))
 	plt.xlabel("Candidate number k")
 	plt.ylabel("Probability")
-	plt.title("Probability of best candidate")
+	plt.title("Probability of picking the best candidate")
 	plt.legend()
 	plt.grid()
 	k_max = max(func1)
 	for i in range(15):
 		if func1[i] == k_max:
-			return i
+			return k[i]
 
-print(taskd())
-plt.show()
+
+
+def taskd2(k, realizations, top_number):
+	vec = np.zeros((30,3))
+	for i in range(realizations):
+		n = rnd.randint(16,45)
+		x_values = rnd.sample(range(1, n + 1), n)  # makes a list with n unique values between 1 and n.
+		strategy_index = secretary_problem_strategy(k, x_values)
+		if strategy_index == False:
+			vec[n-16,0] += 1
+
+
+		elif strategy_index == x_values.index(max(x_values)):
+			vec[n-16,1] += 1
+			vec[n-16,2] += 1
+
+		else:
+			number = 0
+			keep_on = True
+			while (number < top_number and keep_on):  # test this with a short list.
+				number += 1
+				x_values[x_values.index(max(x_values))] = -1
+				if strategy_index == x_values.index(max(x_values)):
+					vec[n-16,2] += 1
+					keep_on = False
+					# stop the for-loop if the index is found.
+	x = range(16,46)
+	width = 1/1.5
+	fig1 = plt.bar(x, vec[:,0], width, color="red", label=("Failures"))
+	plt.xlabel("Realizations of n")
+	plt.ylabel("# picks")
+	plt.title("Times the last candidate was picked")
+	plt.legend()
+	plt.grid()
+	plt.show()
+	fig2 = plt.bar(x, vec[:,1], width, color="green", label=("Wins"))
+	plt.xlabel("Realizations of n")
+	plt.ylabel("# picks")
+	plt.title("Times the best candidate was picked")
+	plt.legend()
+	plt.grid()
+	plt.show()
+	fig3 = plt.bar(x, vec[:,2], width, color="blue", label=("Almost wins"))
+	plt.xlabel("Realizations of n")
+	plt.ylabel("# picks")
+	plt.title("Times the top "+str(top_number)+" best candidates were picked")
+	plt.legend()
+	plt.grid()
+	plt.show()
+	nrBestCandidates = 0
+	nrTopCandidates = 0
+	nrFailures = 0
+	for i in range(30):
+		nrFailures += vec[i,0]
+		nrTopCandidates += vec[i,1]
+		nrBestCandidates += vec[i,2]
+	return nrFailures, nrTopCandidates, nrBestCandidates
+
+# print('The optimal k value is k =',taskd1())
+# plt.show()
+
+print(taskd2(10,1000,3))
+
+# Fails, wins, almost wins
+# (363.0, 354.0, 596.0)
+# (376.0, 356.0, 587.0)
+# (352.0, 351.0, 600.0)
