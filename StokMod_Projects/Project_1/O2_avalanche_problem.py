@@ -56,7 +56,16 @@ def test_realizations():
 	r = 25;
 
 	x = draw_realizations(P, x0, n, r);
-	plt.matshow(x, cmap="hot");
+	plt.matshow(x, origin="bottom", cmap="hot");
+	plt.gca().XAxis.tick_bottom();
+	plt.gca().YAxis.tick_left();
+
+	plt.gca().minorticks_on();
+	plt.gca().set_xticks([0, n - 1]);
+	plt.gca().set_yticks([0, r - 1]);
+	plt.gca().set_xticks([x - 0.5 for x in range(1, n)], minor="true");
+	plt.gca().set_yticks([y - 0.5 for y in range(1, r)], minor="true"); 
+	plt.grid(which="minor");
 	plt.show();
 
 def test_cost():
