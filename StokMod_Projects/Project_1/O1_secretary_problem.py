@@ -135,6 +135,8 @@ def taskd2(k, realizations, top_number):
 		nrBestCandidates += vec[i,2]
 	return nrFailures, nrTopCandidates, nrBestCandidates
 
+
+
 # print('The optimal k value is k =',taskd1())
 # plt.show()
 
@@ -143,4 +145,6 @@ print(taskd2(10,1000,3))
 # Fails, wins, almost wins
 # (363.0, 354.0, 596.0)
 # (376.0, 356.0, 587.0)
-# (352.0, 351.0, 600.0)On
+# (352.0, 351.0, 600.0)
+
+# Hei hei 
