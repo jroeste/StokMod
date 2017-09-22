@@ -139,8 +139,10 @@ def taskd2(k, realizations, top_number):
 
 # print('The optimal k value is k =',taskd1())
 # plt.show()
-
-print(taskd2(10,1000,3))
+plotBestCandidate(30)
+plotBestCandidate(40)
+plt.show()
+# print(taskd2(10,1000,3))
 
 # Fails, wins, almost wins
 # (363.0, 354.0, 596.0)

@@ -12,7 +12,7 @@ if __name__ == "__main__":
     Master_Flag = {
                     0: 'PlotBestCandidate_task 1b',
                     1: 'NumberOfCandidates_task 1c',
-                    2: 'TestCase'
+                    2: 'Task 1d'
             }[0]
     if Master_Flag == 'PlotBestCandidate_task 1b':
         O1.plotBestCandidate(30)
@@ -30,6 +30,6 @@ if __name__ == "__main__":
         print("The strategy give a candidate among the top three values: ", top_number_candidate/realizations)
         print("The strategy end up interviewing all candidates: ", interview_all/realizations)
 
-    elif Master_Flag == 'TestCase':
+    elif Master_Flag == 'Task 1d':
         print("test")
 
