@@ -191,7 +191,7 @@ def find_best_sensor_location():
 
 #plot_forw_back_prob()
 
-print(find_best_sensor_location())
+#print(find_best_sensor_location())
 
 #test_marginal_probability();
 #test_realizations();
