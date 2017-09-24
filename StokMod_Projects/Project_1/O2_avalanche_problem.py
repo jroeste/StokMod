@@ -59,6 +59,10 @@ def test_marginal_probability():
 	ax.minorticks_on();
 	ax.set_xticks([0, n - 1]);
 	ax.set_yticks([0, 1]);
+	ax.set_xlim([0, n - 1]);
+	ax.set_ylim([0, 1]);
+	ax.set_axisbelow(True);
+	ax.grid(which="both");
 
 	fig.savefig("calculated.pdf");
 	fig.show();
@@ -89,6 +93,7 @@ def test_realizations():
 	ax.set_xticks([x - 0.5 for x in range(1, n)], minor="true");
 	ax.set_yticks([y - 0.5 for y in range(1, r)], minor="true"); 
 	ax.xaxis.set_ticks_position("bottom");
+	ax.set_axisbelow(True);
 	ax.grid(which="minor");
 
 	fig.savefig("state.pdf");
@@ -104,10 +109,12 @@ def test_realizations():
 	ax.set_title("Probability of High Risk versus Section");
 	ax.set_xlabel("Section");
 	ax.set_ylabel("Probability");
+	ax.minorticks_on();
 	ax.set_xticks([0, n]);
 	ax.set_yticks([0, 1]);
 	ax.set_xlim([0, n]);
 	ax.set_ylim([0, 1]);
+	ax.set_axisbelow(True);
 	ax.grid(which="both");
 
 	fig.savefig("sampled.pdf");
