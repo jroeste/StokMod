@@ -60,8 +60,12 @@ def number_of_candidates_task1c(k, n, realizations,top_number):  # top_number = 
 def taskd1():
     k = np.linspace(1, 15, num=15)
     func1 = np.zeros(15)
+
+    # The for-loop below sums up the probabilities of picking the best candidate for the individual k-values
     for n in range(16, 46):
         func1 = func1 + k / (30 * n) * np.log(n / k)
+
+    # Here P(Z=1) is plotted as a function of k
     plt.plot(k, func1, label=("P(Z=1)"))
     plt.xlabel("Candidate number k")
     plt.ylabel("Probability")
@@ -75,12 +79,16 @@ def taskd1():
 
 
 def taskd2(k, realizations, top_number):
+    top_number = top_number - 1
     vec = np.zeros((30, 3))
     for i in range(realizations):
-        n = rnd.randint(16, 45)
+        n = rnd.randint(16, 45) # Here we generate a random number of candidates (n)
         x_values = rnd.sample(range(1, n + 1), n)  # makes a list with n unique values between 1 and n.
         strategy_index = secretary_problem_strategy(k, x_values)
-        if strategy_index == False:
+
+        # The if-statements below decide whether the secretary_problem_strategy() function chose the best candidate,
+        # one of the top three candidates or the last candidate
+        if strategy_index == len(x_values)-1:
             vec[n - 16, 0] += 1
 
 
@@ -98,6 +106,8 @@ def taskd2(k, realizations, top_number):
                     vec[n - 16, 2] += 1
                     keep_on = False
                 # stop the for-loop if the index is found.
+
+    # Here we plot the different bar graphs
     x = range(16, 46)
     width = 1 / 1.5
     fig1 = plt.bar(x, vec[:, 0], width, color="red", label=("Failures"))
@@ -120,21 +130,23 @@ def taskd2(k, realizations, top_number):
     plt.title("Times the top " + str(top_number) + " best candidates were picked")
     plt.legend()
     plt.grid()
-    plt.show()
     nrBestCandidates = 0
     nrTopCandidates = 0
     nrFailures = 0
     for i in range(30):
         nrFailures += vec[i, 0]
-        nrTopCandidates += vec[i, 1]
-        nrBestCandidates += vec[i, 2]
-    return nrFailures, nrTopCandidates, nrBestCandidates
+        nrBestCandidates += vec[i, 1]
+        nrTopCandidates += vec[i, 2]
+    return nrBestCandidates, nrTopCandidates, nrFailures
 
 
 # print('The optimal k value is k =',taskd1())
 # plt.show()
+simNum = 1000
+[Best, Top, Fail] = taskd2(10, simNum, 3)
+print(Best/simNum, Top/simNum, Fail/simNum)
+plt.show()
 
-#print(taskd2(10, 1000, 3))
 
 # Fails, wins, almost wins
 # (363.0, 354.0, 596.0)
