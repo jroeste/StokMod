@@ -11,7 +11,7 @@ def plotBestCandidate(n):
     k = np.linspace(1, n)
     func1 = k / n * np.log(n / k)
 
-    plt.plot(k, func1, label=("n = ", n))
+    plt.plot(k, func1, label=("n = "+ str(n)))
     print((int(n/np.e)) / n * np.log(n / int(n/np.e)))
     plt.xlabel("Candidate number k")
     plt.ylabel("Probability")
@@ -47,7 +47,7 @@ def number_of_candidates_task1c(k, n, realizations,top_number):  # top_number = 
         else:
             number = 0                                # Keeps track on how many times the while-loop has been looped.
             keep_on = True                            # This is true while the highest index is still not found.
-            while number < top_number and keep_on:    # test this with a short list.
+            while number < top_number and keep_on:
                 number += 1
                 x_values[x_values.index(max(x_values))] = -1
                 if strategy_index == x_values.index(max(x_values)):
@@ -99,7 +99,7 @@ def taskd2(k, realizations, top_number):
         else:
             number = 0
             keep_on = True
-            while (number < top_number and keep_on):  # test this with a short list.
+            while (number < top_number and keep_on):
                 number += 1
                 x_values[x_values.index(max(x_values))] = -1
                 if strategy_index == x_values.index(max(x_values)):
@@ -152,4 +152,3 @@ def taskd2(k, realizations, top_number):
 # (363.0, 354.0, 596.0)
 # (376.0, 356.0, 587.0)
 # (352.0, 351.0, 600.0)
-
