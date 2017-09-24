@@ -79,7 +79,7 @@ def taskd1():
 
 
 def taskd2(k, realizations, top_number):
-    top_number = top_number - 1
+    top_number-=1                #reduces "top number" because we want to find the best and the next two best values. That's among the top 3 best values.
     vec = np.zeros((30, 3))
     for i in range(realizations):
         n = rnd.randint(16, 45) # Here we generate a random number of candidates (n)
