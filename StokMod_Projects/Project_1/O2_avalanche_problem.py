@@ -2,17 +2,17 @@ __author__ = 'julie'
 # -*- coding: utf-8 -*-
 
 import matplotlib.pyplot as plt
+import matplotlib.style as sty
 import numpy as np
 import numpy.random as rnd
 
 def compute_marginal_probability(P, x0, n):
 	dim = len(x0);
-
-	x = np.zeros((dim, n));
+	x = np.zeros((n, dim));
 	
-	x[:,0] = x0;
+	x[0,:] = x0;
 	for i in range(0, n - 1):
-		x[:,i + 1] = np.matmul(P, x[:,i]);
+		x[i + 1,:] = np.matmul(P, x[i,:]);
 	return x;
 
 def sample(p):
@@ -22,51 +22,96 @@ def sample(p):
 
 def draw_realization(P, x0, n):
 	dim = len(x0);
-	r = np.zeros((dim, n));
+	r = np.zeros((n, dim));
 
-	r[:,0] = sample(x0);
+	# Get initial state from initial probability distribution
+	r[0,:] = sample(x0);
 	for i in range(0, n - 1):
-		p = np.matmul(P, r[:,i]);
-		r[:,i + 1] = sample(p);
+		# Get probability distribution for next state
+		p = np.matmul(P, r[i,:]);
+		r[i + 1,:] = sample(p);
 	return r;
 
 def draw_realizations(P, x0, n, r):
 	dim = len(x0);
-	x = np.zeros((r, n));
+	x = np.zeros((r, n, dim));
 
 	for i in range(1, r):
-		x[i,:] = draw_realization(P, x0, n)[0];
+		x[i,:,:] = draw_realization(P, x0, n);
 	return x;
 
 def test_marginal_probability():
+	# Define left stochastic matrix
 	P = [[0.95, 0.00], [0.05, 1]];
 	x0 = [0.99, 0.01];
 
 	n = 50;
 	x = compute_marginal_probability(P, x0, n);
-	#plt.plot(range(0,n), x[1,:]);
-	#plt.savefig("teest.png");
-	#print(x);
+
+	fig = plt.figure();
+	ax = fig.gca();
+
+	ax.plot(range(0,n), x[:,1], color="black");
+
+	ax.set_title("Calculation of High Risk Probability versus Section");
+	ax.set_xlabel("Section");
+	ax.set_ylabel("Probability");
+	ax.minorticks_on();
+	ax.set_xticks([0, n - 1]);
+	ax.set_yticks([0, 1]);
+
+	fig.savefig("calculated.pdf");
+	fig.show();
 
 def test_realizations():
+	# Define left stochastic matrix
 	P = [[0.95, 0.00], [0.05, 1]];
 	x0 = [0.99, 0.01];
 
 	n = 50;
 	r = 25;
 
-	x = draw_realizations(P, x0, n, r);
-	plt.matshow(x, origin="bottom", cmap="hot");
-	plt.gca().XAxis.tick_bottom();
-	plt.gca().YAxis.tick_left();
+	x = compute_marginal_probability(P, x0, n);
+	z = draw_realizations(P, x0, n, r);
+	p = np.sum(z[:,:,1], axis=0) / r;	
 
-	plt.gca().minorticks_on();
-	plt.gca().set_xticks([0, n - 1]);
-	plt.gca().set_yticks([0, r - 1]);
-	plt.gca().set_xticks([x - 0.5 for x in range(1, n)], minor="true");
-	plt.gca().set_yticks([y - 0.5 for y in range(1, r)], minor="true"); 
-	plt.grid(which="minor");
-	plt.show();
+	fig = plt.figure();
+	ax = fig.gca();
+
+	ax.matshow(z[:,:,0], origin="bottom", cmap="hot");
+
+	ax.set_title("Indepenent realization of risk state versus section");
+	ax.set_xlabel("Section");
+	ax.set_ylabel("Realization");
+	ax.minorticks_on();
+	ax.set_xticks([0, n - 1]);
+	ax.set_yticks([0, r - 1]);
+	ax.set_xticks([x - 0.5 for x in range(1, n)], minor="true");
+	ax.set_yticks([y - 0.5 for y in range(1, r)], minor="true"); 
+	ax.xaxis.set_ticks_position("bottom");
+	ax.grid(which="minor");
+
+	fig.savefig("state.pdf");
+	fig.show();
+
+	fig = plt.figure();
+	ax = fig.gca();
+
+	b = ax.bar(range(n), p, color="black", label="Sampled mean");
+	l, = ax.plot(range(0,n), x[:,1], color="grey", label="Calculated probability");
+	ax.legend(loc=4);
+
+	ax.set_title("Probability of High Risk versus Section");
+	ax.set_xlabel("Section");
+	ax.set_ylabel("Probability");
+	ax.set_xticks([0, n]);
+	ax.set_yticks([0, 1]);
+	ax.set_xlim([0, n]);
+	ax.set_ylim([0, 1]);
+	ax.grid(which="both");
+
+	fig.savefig("sampled.pdf");
+	fig.show();
 
 def test_cost():
 	P = [[0.95, 0.00], [0.05, 1]];
@@ -83,6 +128,7 @@ def test_cost():
 	print(individual_cost);
 	print(all_cost);
 
+#sty.use("seaborn-poster");
 test_marginal_probability();
 test_realizations();
 test_cost();
