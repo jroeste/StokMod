@@ -129,7 +129,7 @@ def test_cost():
 	
 	repair_cost = 5000;
 
-	individual_cost = repair_cost*sum(x[0,:]);
+	individual_cost = repair_cost*sum(x[:,1]);
 	all_cost = 100000;
 	cost = min(individual_cost, all_cost);
 	print(individual_cost);
