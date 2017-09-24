@@ -75,6 +75,7 @@ def taskd1():
 
 
 def taskd2(k, realizations, top_number):
+    top_number-=1                #reduces "top number" because we want to find the best and the next two best values. That's among the top 3 best values.
     vec = np.zeros((30, 3))
     for i in range(realizations):
         n = rnd.randint(16, 45)
@@ -131,10 +132,10 @@ def taskd2(k, realizations, top_number):
     return nrFailures, nrTopCandidates, nrBestCandidates
 
 
-# print('The optimal k value is k =',taskd1())
-# plt.show()
+print('The optimal k value is k =',taskd1())
+plt.show()
 
-#print(taskd2(10, 1000, 3))
+print(taskd2(10, 1000, 3))
 
 # Fails, wins, almost wins
 # (363.0, 354.0, 596.0)
