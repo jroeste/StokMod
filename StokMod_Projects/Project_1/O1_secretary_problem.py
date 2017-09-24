@@ -142,10 +142,10 @@ def taskd2(k, realizations, top_number):
 
 # print('The optimal k value is k =',taskd1())
 # plt.show()
-simNum = 1000
-[Best, Top, Fail] = taskd2(10, simNum, 3)
-print(Best/simNum, Top/simNum, Fail/simNum)
-plt.show()
+# simNum = 1000
+# [Best, Top, Fail] = taskd2(10, simNum, 3)
+# print(Best/simNum, Top/simNum, Fail/simNum)
+# plt.show()
 
 
 # Fails, wins, almost wins
