@@ -51,9 +51,9 @@ def test_marginal_probability():
 	fig = plt.figure();
 	ax = fig.gca();
 
-	ax.plot(range(0,n), x[:,1], color="black");
+	ax.plot(range(0,n), x[:,0], color="black");
 
-	ax.set_title("Calculation of High Risk Probability versus Section");
+	ax.set_title("Calculation of Low Risk Probability versus Section");
 	ax.set_xlabel("Section");
 	ax.set_ylabel("Probability");
 	ax.minorticks_on();
