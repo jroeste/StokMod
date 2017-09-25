@@ -10,6 +10,7 @@ import numpy.random as rnd
 
 def compute_marginal_probability(P, x0, n):
     dim = len(x0);
+    # Create table for P(X_i = j) at x[i,j]
     x = np.zeros((n, dim));
 
     x[0, :] = x0;
@@ -20,6 +21,7 @@ def compute_marginal_probability(P, x0, n):
 
 
 def sample(p):
+    # Take probability distribution p and a vector with 1 in the active state
     s = rnd.rand();
     p_sample = [s, 1 - s];
     return np.less(p_sample, p).astype(np.float64);
