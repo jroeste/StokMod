@@ -21,7 +21,7 @@ if __name__ == "__main__":
                     8: '2E) find_best_sensor_location()',
 
 
-            }[]
+            }[6]
     if Master_Flag == '1B) PlotBestCandidate_task 1b':
         O1.plotBestCandidate(30)
         O1.plotBestCandidate(40)
@@ -76,6 +76,7 @@ if __name__ == "__main__":
         O2.test_cost()
 
     elif Master_Flag == '2E) find_best_sensor_location()':
-        print("Optimal sensor location is at section: ", O1.taskd1())
+        print("Optimal sensor location is at section : ", O2.find_best_sensor_location())
+
 
 
