@@ -185,6 +185,7 @@ def test_realizations():
 
 
 def test_cost():
+    # Define left stochastic matrix
     P = [[0.95, 0.00], [0.05, 1]];
     x0 = [0.99, 0.01];
 

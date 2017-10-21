@@ -20,12 +20,11 @@ if __name__ == "__main__":
                     7: '2D) test_cost()',
                     8: '2E) find_best_sensor_location()',
 
-
-            }[6]
-    if Master_Flag == '1B) PlotBestCandidate_task 1b':
-        O1.plotBestCandidate(30)
-        O1.plotBestCandidate(40)
-
+            }[2]
+    if Master_Flag == 'PlotBestCandidate_task 1b':
+        O1.plotBestCandidate(30, "blue")
+        O1.plotBestCandidate(40, "red")
+        #O1.plotBestCandidate(100)
         plt.show()
 
     elif Master_Flag == '1C) NumberOfCandidates_task 1c':
