@@ -7,7 +7,7 @@ import numpy as np
 import random as rnd
 
 
-def plotBestCandidate(n):
+def plotBestCandidate(n, farge):
     k = np.linspace(1, n)
     func1 = k / n * np.log(n / k)
 
@@ -110,21 +110,21 @@ def taskd2(k, realizations, top_number):
     # Here we plot the different bar graphs
     x = range(16, 46)
     width = 1 / 1.5
-    fig1 = plt.bar(x, vec[:, 0], width, color="red", label=("Failures"))
+    fig1 = plt.bar(x, vec[:, 0], width, color="red", label=("Last candidate"))
     plt.xlabel("Realizations of n")
     plt.ylabel("# picks")
     plt.title("Times the last candidate was picked")
     plt.legend()
     plt.grid()
     plt.show()
-    fig2 = plt.bar(x, vec[:, 1], width, color="green", label=("Wins"))
+    fig2 = plt.bar(x, vec[:, 1], width, color="green", label=("Best candidate"))
     plt.xlabel("Realizations of n")
     plt.ylabel("# picks")
     plt.title("Times the best candidate was picked")
     plt.legend()
     plt.grid()
     plt.show()
-    fig3 = plt.bar(x, vec[:, 2], width, color="blue", label=("Almost wins"))
+    fig3 = plt.bar(x, vec[:, 2], width, color="blue", label=("Top three candidates"))
     plt.xlabel("Realizations of n")
     plt.ylabel("# picks")
     plt.title("Times the top " + str(top_number) + " best candidates were picked")
