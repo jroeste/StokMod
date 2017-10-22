@@ -3,22 +3,15 @@ __author__ = 'julie'
 import numpy as np
 import matplotlib.pyplot as plt
 import math
-#variables="example_page284"
-variables="project_variables"
 
-if (variables=="project_variables"):
-    k_number_of_units=32
-    arrival_rate_lambda=25
-    exp_time_rate_mu=1
-    rho=arrival_rate_lambda/(k_number_of_units*exp_time_rate_mu)
+
 
 def compute_PI_ZERO(k,rho):
     sum=0
     for i in range(k+1):
-        sum+=(k*rho)**i/math.factorial(i) #+   ((k**k)/math.factorial(k))*(rho**k)/(1-rho)
+        sum+=(k*rho)**i/math.factorial(i)
     return 1/sum
 
-PI_ZERO=compute_PI_ZERO(k_number_of_units,rho)
 
 def compute_eq_prob(k,l,m,n,PI_ZERO):
     return 1/math.factorial(n)*(l/m)**n*PI_ZERO
@@ -32,7 +25,6 @@ def plot_eq_probabilities(k,l,m,PI_ZERO):
         y[i]=compute_eq_prob(k,l,m,i,PI_ZERO)
         integral_sum+=y[i]
         expected_value+=y[i]*i
-    print(y)
     print("exp_value",expected_value)
     print("integral sum",integral_sum)
     plt.plot(x,y)
@@ -41,7 +33,107 @@ def plot_eq_probabilities(k,l,m,PI_ZERO):
     plt.xlabel("n")
     plt.savefig("equilibrium_prob.pdf")
     plt.show()
-print("pi_zero",PI_ZERO)
-plot_eq_probabilities(k_number_of_units,arrival_rate_lambda,exp_time_rate_mu,PI_ZERO)
+
+
+def simulate_N(k,l,m,realizations,t_max):
+    average_n_list = np.zeros(1000000)
+    average_n_list[0] = 0
+    average_T_vektor=np.zeros(k+1)
+    average_T_vektor[0]=0
+    average_lost_jobs=0
+
+    for i in range(realizations):
+        n_list=np.zeros(100000)
+        t_list=np.zeros(100000)
+        T_vektor=np.zeros(k+1)
+        state=0
+        n_list[0]=0
+        t_list[0]=0
+        T_vektor[0]=0
+        i = 0
+        lost_jobs = 0
+
+        while (t_list[i] < t_max):
+
+            if n_list[i]==0:
+                time_birth = np.random.exponential(1/l, 1)
+                n_list[i+1]=n_list[i]+1
+                t_list[i + 1] = t_list[i] + time_birth
+                T_vektor[state] += time_birth
+                average_T_vektor[state]+=time_birth
+
+                average_n_list[i+1]+=n_list[i+1]
+                state += 1
+
+            elif (0<n_list[i]) and n_list[i]<k:
+
+                time_birth = np.random.exponential(1/l, 1)
+                time_death = np.random.exponential(1 / (n_list[i]*m), 1)
+                time = min(time_birth, time_death)
+                t_list[i + 1] = t_list[i] + time
+
+                T_vektor[state] += time
+                average_T_vektor[state] += time
+
+                if time==time_birth:
+                    n_list[i + 1] = n_list[i] + 1
+                    state+=1
+                else:
+                    n_list[i + 1] = n_list[i] - 1
+                    state-=1
+
+                average_n_list[i + 1] += n_list[i + 1]
+
+
+            elif n_list[i]==k:
+
+                time_death = np.random.exponential(1 / (k*m), 1)
+                time_birth= np.random.exponential(1/l, 1)
+                time = min(time_birth, time_death)
+
+                t_list[i + 1] = t_list[i] + time
+
+                T_vektor[state] += time
+                average_T_vektor[state] += time
+
+
+                if time == time_birth:
+
+                    lost_jobs += 1
+                    average_lost_jobs += 1
+                    n_list[i + 1] += n_list[i]              #not increasing n
+                    average_n_list[i + 1] += n_list[i + 1]
+
+                elif time==time_death:
+
+                    n_list[i+1]=n_list[i]-1
+                    state-=1
+                    average_n_list[i + 1] += n_list[i + 1]
+            i+=1
+
+
+    average_lost_jobs/=realizations
+    average_lost_jobs_per_hour=average_lost_jobs/t_max
+    average_T_vektor/=realizations
+    average_n_list /= realizations
+
+    return average_lost_jobs_per_hour,average_T_vektor,t_list,average_n_list,i
+
+def plot_transient(k,l,m,realizations,t_max):
+    lb,average_T_vektor,t_list,average_n_list,iterations=simulate_N(k,l,m,realizations,t_max)
+    plt.plot(t_list[:iterations],average_n_list[:iterations])
+    plt.title("System reaching equilibrium")
+    plt.xlabel("$t$ (hours)")
+    plt.ylabel("$N(t)$")
+    plt.savefig("plot_transient.pdf")
+
+def plot_vector_time(k,l,m,realizations,t_max):
+    lb, average_T_vektor, t_list, average_n_list, iterations = simulate_N(k, l, m, realizations,t_max)
+    x=(np.linspace(0, k,k+1))
+    plt.plot(x, average_T_vektor /t_max)
+    plt.title("Vector time - Verification of long term prob. ")
+    plt.xlabel("$n$ jobs")
+    plt.ylabel("$T_n / t_{max}$")
+    plt.savefig("plot_vector_time.pdf")
 
 
