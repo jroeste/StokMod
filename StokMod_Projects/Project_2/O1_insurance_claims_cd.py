@@ -24,12 +24,13 @@ def simulate_n(n, days, mu, sigma, lam, discount):
 	return N, C;
 
 
-def sample_confidence_tail(beta, numbers, bins):
+def sample_confidence_tail(C, beta):
+	hist, bins = np.histogram(C, 100);
 	i = 0;
 	number = 0;
-	n = sum(numbers);
-	while (number + numbers[i] < beta*n and i < n):
-		number += numbers[i];
+	n = sum(hist);
+	while (number + hist[i] < beta*n and i < n):
+		number += hist[i];
 		i += 1;
 	return bins[i];
 
@@ -40,10 +41,11 @@ def constants():
 	mu = -2;
 	sigma = 1;
 	alpha = 0.001;
-	return n, t, mu, sigma, alpha;
+	beta = 0.95;
+	return n, t, mu, sigma, alpha, beta;
 
 def simulate_constant_intensity():
-	n, t, mu, sigma, alpha = constants();
+	n, t, mu, sigma, alpha, beta = constants();
 	lam = lambda t: 3;
 	discount = lambda t: 1;
 	N, C = simulate_n(n, t, mu, sigma, lam, discount);
@@ -51,24 +53,28 @@ def simulate_constant_intensity():
 	
 	
 def simulate_varying_intensity():
-	n, t, mu, sigma, alpha = constants();
+	n, t, mu, sigma, alpha, beta = constants();
 	lam = lambda t: 2 + np.cos(t*np.pi/182.5);
 	discount = lambda t: 1;
 	N, C = simulate_n(n, t, mu, sigma, lam, discount);
 	plot_histogram(C);
 			
 def simulate_constant_intensity_discounted():	
-	n, t, mu, sigma, alpha = constants();
+	n, t, mu, sigma, alpha, beta = constants();
 	lam = lambda t: 3;
 	discount = lambda t: np.exp(-alpha*t);
 	N, C = simulate_n(n, t, mu, sigma, lam, discount);
+	bank = sample_confidence_tail(C, beta);
+	print("Bank: ", bank);	
 	plot_histogram(C);
 
 def simulate_varying_intensity_discounted():	
-	n, t, mu, sigma, alpha = constants();
+	n, t, mu, sigma, alpha, beta = constants();
 	lam = lambda t: 2 + np.cos(t*np.pi/182.5);
 	discount = lambda t: np.exp(-alpha*t);
 	N, C = simulate_n(n, t, mu, sigma, lam, discount);
+	bank = sample_confidence_tail(C, beta);
+	print("Bank: ", bank);	
 	plot_histogram(C);
 	
 def plot_histogram(X):
