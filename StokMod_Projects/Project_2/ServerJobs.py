@@ -16,6 +16,7 @@ def compute_PI_ZERO(k,rho):
 def compute_eq_prob(k,l,m,n,PI_ZERO):
     return 1/math.factorial(n)*(l/m)**n*PI_ZERO
 
+#Task 2a
 def plot_eq_probabilities(k,l,m,PI_ZERO):
     x=np.linspace(0,k,k+1)
     y=[0]*(k+1)
@@ -33,8 +34,9 @@ def plot_eq_probabilities(k,l,m,PI_ZERO):
     plt.savefig("equilibrium_prob.pdf")
     plt.show()
 
-
+#Task 2b)
 def simulate_N(k,l,m,realizations,t_max):
+
     average_n_list = np.zeros(1000000)
     average_n_list[0] = 0
     average_T_vektor=np.zeros(k+1)
@@ -52,10 +54,10 @@ def simulate_N(k,l,m,realizations,t_max):
         i = 0
         lost_jobs = 0
 
-        while (t_list[i] < t_max):
+        while (t_list[i] < t_max):  #while the time is less than 1 week (7* 24 hours)
 
-            if n_list[i]==0:
-                time_birth = np.random.exponential(1/l, 1)
+            if n_list[i]==0:        #Jobs can only arrive at n=0
+                time_birth = np.random.exponential(1/l, 1)  #picks a random timestep from the exp.function
                 n_list[i+1]=n_list[i]+1
                 t_list[i + 1] = t_list[i] + time_birth
                 T_vektor[state] += time_birth
@@ -64,27 +66,27 @@ def simulate_N(k,l,m,realizations,t_max):
                 average_n_list[i+1]+=n_list[i+1]
                 state += 1
 
-            elif (0<n_list[i]) and n_list[i]<k:
+            elif (0<n_list[i]) and n_list[i]<k: #Jobs can either arrive or finish
 
-                time_birth = np.random.exponential(1/l, 1)
-                time_death = np.random.exponential(1 / (n_list[i]*m), 1)
-                time = min(time_birth, time_death)
+                time_birth = np.random.exponential(1/l, 1)  #picks a random timestep from the exp.function
+                time_death = np.random.exponential(1 / (n_list[i]*m), 1) #picks a random timestep from the exp.function
+                time = min(time_birth, time_death)          #the shortest time is chosen
                 t_list[i + 1] = t_list[i] + time
 
-                T_vektor[state] += time
+                T_vektor[state] += time                     #time spent in given state is added
                 average_T_vektor[state] += time
 
                 if time==time_birth:
-                    n_list[i + 1] = n_list[i] + 1
+                    n_list[i + 1] = n_list[i] + 1           #arriving job
                     state+=1
                 else:
-                    n_list[i + 1] = n_list[i] - 1
+                    n_list[i + 1] = n_list[i] - 1           #finished job
                     state-=1
 
                 average_n_list[i + 1] += n_list[i + 1]
 
 
-            elif n_list[i]==k:
+            elif n_list[i]==k:                              #when the system is full
 
                 time_death = np.random.exponential(1 / (k*m), 1)
                 time_birth= np.random.exponential(1/l, 1)
@@ -98,9 +100,9 @@ def simulate_N(k,l,m,realizations,t_max):
 
                 if time == time_birth:
 
-                    lost_jobs += 1
+                    lost_jobs += 1                          #number of jobs forwarded summed up
                     average_lost_jobs += 1
-                    n_list[i + 1] += n_list[i]              #not increasing n
+                    n_list[i + 1] += n_list[i]              #the n-list for next iterations needs to be updated, but the state does not change.
                     average_n_list[i + 1] += n_list[i + 1]
 
                 elif time==time_death:
@@ -118,6 +120,7 @@ def simulate_N(k,l,m,realizations,t_max):
 
     return average_lost_jobs_per_hour,average_T_vektor,t_list,average_n_list,i
 
+#Plot the N(t)
 def plot_transient(k,l,m,realizations,t_max):
     lb,average_T_vektor,t_list,average_n_list,iterations=simulate_N(k,l,m,realizations,t_max)
     plt.plot(t_list[:iterations],average_n_list[:iterations])
@@ -126,6 +129,7 @@ def plot_transient(k,l,m,realizations,t_max):
     plt.ylabel("$N(t)$")
     plt.savefig("plot_transient.pdf")
 
+#Plot of vector time, i.e. time spent in different states
 def plot_vector_time(k,l,m,realizations,t_max):
     lb, average_T_vektor, t_list, average_n_list, iterations = simulate_N(k, l, m, realizations,t_max)
     x=(np.linspace(0, k,k+1))
