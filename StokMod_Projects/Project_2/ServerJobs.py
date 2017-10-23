@@ -9,7 +9,7 @@ import math
 def compute_PI_ZERO(k,rho):
     sum=0
     for i in range(k+1):
-        sum+=(k*rho)**i/math.factorial(i)
+        sum+=(rho)**i/math.factorial(i)
     return 1/sum
 
 
@@ -25,12 +25,11 @@ def plot_eq_probabilities(k,l,m,PI_ZERO):
         y[i]=compute_eq_prob(k,l,m,i,PI_ZERO)
         integral_sum+=y[i]
         expected_value+=y[i]*i
-    print("exp_value",expected_value)
-    print("integral sum",integral_sum)
+
     plt.plot(x,y)
     plt.title("Equilibrium Probabilities")
-    plt.ylabel("P(N(t)=n)")
-    plt.xlabel("n")
+    plt.ylabel("$P(N(t)=n)$")
+    plt.xlabel("$n$")
     plt.savefig("equilibrium_prob.pdf")
     plt.show()
 

@@ -11,7 +11,7 @@ k_number_of_units = 32
 arrival_rate_lambda = 25
 exp_time_rate_mu = 1
 t_max=7*24
-rho = arrival_rate_lambda / (k_number_of_units * exp_time_rate_mu)
+rho = arrival_rate_lambda / exp_time_rate_mu
 PI_ZERO = O2.compute_PI_ZERO(k_number_of_units, rho)
 
 realizations=100
