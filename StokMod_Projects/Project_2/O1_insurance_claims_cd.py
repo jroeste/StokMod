@@ -86,7 +86,7 @@ def plot_histogram(X, fname):
 		plt.title('Histogram of Cost:');
 		plt.show();
 
-simulate_constant_intensity();	
-simulate_varying_intensity();
-simulate_constant_intensity_discounted();	
-simulate_varying_intensity_discounted();
+simulate_constant_intensity(); # C
+simulate_varying_intensity(); # C
+simulate_constant_intensity_discounted(); # D
+simulate_varying_intensity_discounted(); # D
