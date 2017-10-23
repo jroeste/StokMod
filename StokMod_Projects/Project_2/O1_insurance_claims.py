@@ -4,18 +4,7 @@ import math as math
 import random as rnd
 
 
-# def poissonProb(l,t,min,max):
-# 	if min == max:
-# 		return math.exp(-l*t)*((l*t)^min)/math.factorial(min)
-# 	prob = 0
-# 	for i in range(min,max):
-# 		temp = math.exp(-l*t)*((l*t)^i)
-# 		for j in range(1,i):
-# 			temp /= j
-# 		prob += temp
-# 	return prob
 
-# print(poissonProb(3,59,0,1)
 def simulateNrTasks(nrSimulations, probLimit, timePeriod, intensity):
 	n = nrSimulations # Number of simulations
 	lam = intensity # Intensity constant
@@ -33,7 +22,7 @@ def simulateNrTasks(nrSimulations, probLimit, timePeriod, intensity):
 def simulate_N_as_func_of_time_A(lamb):
 	N_t = np.zeros(59)
 	for t in range(0,59):
-		N_t[t] = np.random.poisson(lam=lamb, size=1) 
+		N_t[t] = np.random.poisson(lam=lamb, size=1) # Here we draw a single sample from a Poisson distribu 
 		N_t[t] += N_t[t-1]
 	return N_t
 
@@ -88,5 +77,5 @@ def simulateNrTasks2(nrSimulations, probLimit):
 	print(percentage)
 
 
-simulateNrTasks2(10000,175)
+simulateNrTasks2(20000,175)
 # print(simulate_N_as_fun100_of_time_B())
