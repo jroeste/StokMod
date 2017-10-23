@@ -1,10 +1,5 @@
 import numpy as np
 import matplotlib.pyplot as plt
-import scipy.stats as st
-
-#n=10000 #Number of years
-#t=365;mu=-2;sigma=1;alpha=0.001;beta=0.95;
-
 
 def simulate_days(days, mu, sigma, lam, discount):
 	n = 0;
