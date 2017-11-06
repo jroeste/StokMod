@@ -32,10 +32,12 @@ def waiting_time(mean,variance,rate_of_change,initial_stock_price,start_time,rea
     x=np.zeros(time_limit+1)
     t_list=np.linspace(start_time,realizations,realizations)
     x[0]=initial_stock_price
+
     #Plot cumulative distrubution function:
-    cumulative=np.zeros(time_limit+1)
+    cumulative=np.zeros(realizations+1)
     for i in range(1,realizations+1):
-        cumulative[i]= norm.cdf((rate_of_change*initial_stock_price)/(time_limit/realizations*i*variance**2))
+        cumulative[i]=2*(1-norm.cdf((rate_of_change*initial_stock_price)/np.sqrt(time_limit/realizations*i*variance**2)))
+
 
 
     #Plott hitting time function
@@ -45,19 +47,19 @@ def waiting_time(mean,variance,rate_of_change,initial_stock_price,start_time,rea
             time += 1
             x[time]= x[time-1]+np.random.normal()*variance  #stock price
         hitting_times[i]=time
+
     mean_number=np.mean(hitting_times)
-    print(mean_number)
+    print("Average - mean number: ",mean_number)
     std_number=np.std(hitting_times)
-    print(std_number)
+    print("Standard Deviation: ",std_number)
     hitting_times.sort()
-    hitting_times2=hitting_times[:85]
-    t_list2=t_list[:85]
 
-    plt.plot(t_list,hitting_times)
-    plt.xlabel("realizations")
-    plt.ylabel("Hitting times")
-
-    plt.figure()
+    x_list = np.linspace(0, len(cumulative), len(cumulative))
+    plt.plot(x_list * (time_limit / realizations), cumulative,label="Analytic - cdf")
+    plt.plot(hitting_times,t_list/realizations,label="Simulated - Hitting Times")
+    plt.ylabel("Probability")
+    plt.xlabel("Waiting time")
+    plt.legend(loc=4)
 
 
 

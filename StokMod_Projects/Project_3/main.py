@@ -17,7 +17,7 @@ start_time=0
 end_time=120
 initial_stock_price=40
 wished_stock_price=50
-realizations=100
+realizations=1000
 time_limit=10000
 
 
@@ -29,7 +29,7 @@ if __name__ == "__main__":
                     2: 'H) Hitting Times',
 
 
-            }[1]        #<-------Write number of the function you want to test. For example, for finding the best sensor location, write 8 in the [ ].
+            }[2]        #<-------Write number of the function you want to test. For example, for finding the best sensor location, write 8 in the [ ].
     if Master_Flag =='H) Stock Price probability 1':
         start_time1=0   #Jan 1st
 
@@ -50,7 +50,10 @@ if __name__ == "__main__":
         plt.savefig("stock_price_march_may.pdf")
         plt.show()
 
-    elif Master_Flag=='Hitting Times':
-        H.waiting_time(mean, variance, 0.02, initial_stock_price, start_time, realizations, time_limit)
+    elif Master_Flag=='H) Hitting Times':
+        plt.title("Hitting Times, 10% increase from x(0)=40")
+        H.waiting_time(mean, variance, 0.1, initial_stock_price, start_time, realizations, time_limit)
+        plt.savefig("HittingTimes.pdfHittingTimes.pdf")
         plt.show()
+
 
