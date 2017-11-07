@@ -22,7 +22,7 @@ def simulateNrTasks(nrSimulations, probLimit, timePeriod, intensity):
 def simulate_N_as_func_of_time_A(lamb):
 	N_t = np.zeros(59)
 	for t in range(0,59):
-		N_t[t] = np.random.poisson(lam=lamb, size=1) 
+		N_t[t] = np.random.poisson(lam=lamb, size=1) # Here we draw a single sample from a Poisson distribu 
 		N_t[t] += N_t[t-1]
 	return N_t
 
