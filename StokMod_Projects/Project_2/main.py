@@ -22,19 +22,18 @@ if __name__ == "__main__":
     Master_Flag = {
                     0: '2A) Plot Equilibrium Probabilities',
                     1: '2B) Simulate N',
-                    2: '2B) Plot Vector Time'
-                    3: '1A) Test whether calculated probability agrees with simulations'
-                    4: '1A) Simulate a 100 realizations of N(t)'
-                    5: '1B) Test whether calculated probability agrees with simulations'
-                    6: '1B) Simulate a 100 realizations of N(t)'
-                    7: '1C) Simulate claim amounts with constant intensity'
-                    8: '1C) Simulate claim amounts with time-varying intensity'
-                    9: '1D) Simulate discounted claims with constant intensity'
-                    10: '1D) Simulate discounted claims with time-varying intensity'
+                    2: '2B) Plot Vector Time',
+                    3: '1A) Test whether calculated probability agrees with simulations',
+                    4: '1A) Simulate a 100 realizations of N(t)',
+                    5: '1B) Test whether calculated probability agrees with simulations',
+                    6: '1B) Simulate a 100 realizations of N(t)',
+                    7: '1C) Simulate claim amounts with constant intensity',
+                    8: '1C) Simulate claim amounts with time-varying intensity',
+                    9: '1D) Simulate discounted claims with constant intensity',
+                    10: '1D) Simulate discounted claims with time-varying intensity',
 
+    }[1]  #<-------Write number of the function you want to test. For example, for finding the best sensor location, write 8 in the [ ].
 
-
-            }[1]        #<-------Write number of the function you want to test. For example, for finding the best sensor location, write 8 in the [ ].
     if Master_Flag =='2A) Plot Equilibrium Probabilities':
         O2.plot_eq_probabilities(k_number_of_units, arrival_rate_lambda, exp_time_rate_mu, PI_ZERO)
 
@@ -45,7 +44,7 @@ if __name__ == "__main__":
         O2.plot_transient(k_number_of_units,arrival_rate_lambda,exp_time_rate_mu,realizations,t_max)
         plt.show()
 
-    elif Master_Flag=="2B) Plot Vector Time":
+    elif Master_Flag=='2B) Plot Vector Time':
 
         plt.figure()
         O2.plot_vector_time(k_number_of_units,arrival_rate_lambda,exp_time_rate_mu,realizations,t_max)
@@ -81,7 +80,7 @@ if __name__ == "__main__":
 
         O11.simulate_constant_intensity_discounted()
 
-    elif Master_Flag=='1D) Simulate discounted claims with time-varying intensity'
+    elif Master_Flag=='1D) Simulate discounted claims with time-varying intensity':
 
         O11.simulate_varying_intensity_discounted()
 
