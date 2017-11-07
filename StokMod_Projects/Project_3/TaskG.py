@@ -51,6 +51,8 @@ def G1():
 	S_A = corrMatern(H_A,sigma,phi_m);
 	S_B = corrMatern(H_B,sigma,phi_m);
 	S_AB = corrMatern(H_AB,sigma,phi_m);
+
+	# Calculate conditional expected valuea and variance
 	mult1 = np.matmul(S_AB,np.linalg.inv(S_B));
 	mult2 = np.matmul(mult1,x_B-mu_B);
 	condExpValue = mu_A + mult2
@@ -58,9 +60,18 @@ def G1():
 	mult4 = np.matmul(mult3,np.matrix.transpose(S_AB))
 	condVariance = S_A - mult4;
 
+	# Calculate 90% conditional prediction interval. 
+	n = len(condExpValue)
+	predIntervall = np.zeros(2,n);
+	z_val = 1.645; # Sample from Z-distribution that yields 90% prediction interval.
+	for i in range(0,n):
+		predIntervall[1,i] = condExpValue[i] + z_val*math.sqrt(condVariance[i,i]);
+		predIntervall[2,i] = condExpValue[i] - z_val*math.sqrt(condVariance[i,i]);
+
 	# Plot conditional expected value with 90 % prediction interval.
 	plt.plot(t_A, condExpValue, label='Expected value')
-	plt.plot(t_B, x_B, label='Data block B')
+	plt.plot(t_B, x_B, 'bs', label='Data block B')
+	plt.plot(t_A, predIntervall, 'r--', label='90% prediction interval')
 	plt.xlabel("t")
 	plt.ylabel("x(t)")
 	plt.title("Expected x_A, at instances t_A. Conditional on (t_B, x_B(t))")
@@ -87,6 +98,8 @@ def G3():
 	S_A = corrMatern(H_A,sigma,phi_m);
 	S_B = corrMatern(H_B,sigma,phi_m);
 	S_AB = corrMatern(H_AB,sigma,phi_m);
+
+	# Calculate conditional expected valuea and variance
 	mult1 = np.matmul(S_AB,np.linalg.inv(S_B));
 	mult2 = np.matmul(mult1,x_B-mu_B);
 	condExpValue = mu_A + mult2
@@ -94,8 +107,13 @@ def G3():
 	mult4 = np.matmul(mult3,np.matrix.transpose(S_AB))
 	condVariance = S_A - mult4;
 
-	predIntervall = np.zeros(len(condVariance));
-	for i in range()
+	# Calculate 90% conditional prediction interval. 
+	n = len(condExpValue)
+	predIntervall = np.zeros(2,n);
+	z_val = 1.645; # Sample from Z-distribution that yields 90% prediction interval.
+	for i in range(0,n):
+		predIntervall[1,i] = condExpValue[i] + z_val*math.sqrt(condVariance[i,i]);
+		predIntervall[2,i] = condExpValue[i] - z_val*math.sqrt(condVariance[i,i]);
 
 	# Plot conditional expected value with 90 % prediction interval.
 	plt.plot(t_A, condExpValue, label='Expected value')
