@@ -62,16 +62,16 @@ def G1():
 
 	# Calculate 90% conditional prediction interval. 
 	n = len(condExpValue)
-	predIntervall = np.zeros(2,n);
+	predIntervall = np.zeros((2,n));
 	z_val = 1.645; # Sample from Z-distribution that yields 90% prediction interval.
 	for i in range(0,n):
-		predIntervall[1,i] = condExpValue[i] + z_val*math.sqrt(condVariance[i,i]);
-		predIntervall[2,i] = condExpValue[i] - z_val*math.sqrt(condVariance[i,i]);
+		predIntervall[0,i] = condExpValue[i] + z_val*math.sqrt(condVariance[i,i]);
+		predIntervall[1,i] = condExpValue[i] - z_val*math.sqrt(condVariance[i,i]);
 
 	# Plot conditional expected value with 90 % prediction interval.
 	plt.plot(t_A, condExpValue, label='Expected value')
 	plt.plot(t_B, x_B, 'bs', label='Data block B')
-	plt.plot(t_A, predIntervall, 'r--', label='90% prediction interval')
+	plt.plot(t_A, predIntervall[0,:], 'r--', t_A, predIntervall[1,:], 'r--', label='90% prediction interval')
 	plt.xlabel("t")
 	plt.ylabel("x(t)")
 	plt.title("Expected x_A, at instances t_A. Conditional on (t_B, x_B(t))")
@@ -79,7 +79,8 @@ def G1():
 	plt.grid()
 	plt.show()
 
-def G2()
+def G2():
+	print('pikk')
 
 def G3():
 	# Assignment specific parameters
@@ -109,15 +110,16 @@ def G3():
 
 	# Calculate 90% conditional prediction interval. 
 	n = len(condExpValue)
-	predIntervall = np.zeros(2,n);
+	predIntervall = np.zeros((2,n));
 	z_val = 1.645; # Sample from Z-distribution that yields 90% prediction interval.
 	for i in range(0,n):
-		predIntervall[1,i] = condExpValue[i] + z_val*math.sqrt(condVariance[i,i]);
-		predIntervall[2,i] = condExpValue[i] - z_val*math.sqrt(condVariance[i,i]);
+		predIntervall[0,i] = condExpValue[i] + z_val*math.sqrt(condVariance[i,i]);
+		predIntervall[1,i] = condExpValue[i] - z_val*math.sqrt(condVariance[i,i]);
 
 	# Plot conditional expected value with 90 % prediction interval.
 	plt.plot(t_A, condExpValue, label='Expected value')
-	plt.plot(t_B, x_B, label='Data block B') # Dette vil du ha som scatterplot uten linjer i mellom strekene. 
+	plt.plot(t_B, x_B, 'bs', label='Data block B')
+	plt.plot(t_A, predIntervall[0,:], 'r--', t_A, predIntervall[1,:], 'r--', label='90% prediction interval')
 	plt.xlabel("t")
 	plt.ylabel("x(t)")
 	plt.title("Expected x_A, at instances t_A. Conditional on (t_B, x_B(t))")
@@ -127,3 +129,4 @@ def G3():
 
 
 
+G1()
