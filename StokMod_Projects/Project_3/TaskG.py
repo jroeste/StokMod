@@ -3,6 +3,7 @@ import pandas as pd
 import math as math
 import matplotlib.pyplot as plt
 import random as rnd
+import scipy.stats as st 
 
 # Creating a mean vector and covariance matrix conditional on a datablock x_B
 # Input parameters
@@ -15,6 +16,8 @@ def h(ta, tb):
 	onesa = np.ones(na);
 	onesb = np.ones(nb);
 	return abs(np.outer(ta, onesb) - np.outer(onesa, tb));
+
+
 
 
 def sample(tmin, tmax, nrPoints, avg, var):
@@ -32,7 +35,15 @@ def sample(tmin, tmax, nrPoints, avg, var):
 
 def corrMatern(h,sigma,phi):
 	return (sigma**2)*(1+phi*h)*np.exp(-phi*h)
-	
+
+def qualProb(condExp, condVar, probLim):
+	n = len(condExp);
+	qualDiff = np.fabs(condExp - probLim*np.ones(n));
+	qualZscore = np.zeros(n);
+	for i in range((0,n)):
+		qualZscore[i] = qualDiff[i]/condVar[i];
+		
+
 
 def G1():
 	# Assigment specific parameters
@@ -80,7 +91,7 @@ def G1():
 	plt.show()
 
 def G2():
-	print('pikk')
+	
 
 def G3():
 	# Assignment specific parameters
