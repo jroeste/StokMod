@@ -59,9 +59,6 @@ def matrixConstructor(t_A, t_B, sigma, phi):
 	return S_A, S_B, S_AB
 # Given an array of expected values, variances and a limit; function returns probability of element i being greater than probLim
 def qualProb(expVal, Var, probLim):
-	# n = len(expVal);
-	# qualDiff = probLim*np.ones(n)-expVal;
-	# qualProbs = np.zeros(n);
 	qualProbs = 1 - st.norm.cdf(57, expVal, np.sqrt(Var));
 	return qualProbs;
 
@@ -177,3 +174,5 @@ def G3():
 	plt.legend()
 	plt.grid()
 	plt.show()
+
+G1()
