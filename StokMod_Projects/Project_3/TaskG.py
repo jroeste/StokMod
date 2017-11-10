@@ -46,11 +46,10 @@ def matrixConstructor(t_A, t_B, sigma, phi):
 
 # Given an array of expected values, variances and a limit; function returns probability of element i being greater than probLim
 def qualProb(expVal, Var, probLim):
-	n = len(expVal);
-	qualDiff = probLim*np.ones(n)-expVal;
-	qualProbs = np.zeros(n);
-	for i in range(0,n):
-		qualProbs[i] = 1 - st.norm.cdf(qualDiff[i]/Var[i]);
+	# n = len(expVal);
+	# qualDiff = probLim*np.ones(n)-expVal;
+	# qualProbs = np.zeros(n);
+	qualProbs = 1 - st.norm.cdf(57, expVal, np.sqrt(Var));
 	return qualProbs;
 
 
@@ -99,25 +98,32 @@ def G2():
 	sigma = 4;
 	phi_m = 0.2;
 	t_A = np.linspace(10,80,141);
+	n = len(t_A);
 	t_B = [19.4, 29.7, 36.1, 50.7, 71.9];
 	x_B = [50.1, 39.1, 54.7, 42.1, 40.9];
 	mu_A = 50*np.ones(141);
 	mu_B = 50*np.ones(len(x_B));
 
+	
 	# Construct distance, and covariance matrices
 	S_A, S_B, S_AB = matrixConstructor(t_A, t_B, sigma, phi_m);
 
-	# Calculate conditional expected valuea and variance
+		# Calculate conditional expected valuea and variance
 	mult1 = np.matmul(S_AB,np.linalg.inv(S_B));
 	mult2 = np.matmul(mult1,x_B-mu_B);
 	condExpValue = mu_A + mult2
 	mult3 = np.matmul(S_AB,np.linalg.inv(S_B))
 	mult4 = np.matmul(mult3,np.matrix.transpose(S_AB))
-	condVariance = S_A - mult4;
+	condCovar = S_A - mult4;
+	condVar = np.zeros(n);
+	for i in range (0,n):
+		condVar[i] = condCovar[i,i];
 
 	# Calculate the probability of quality being greater than 57 for a certain temp
-	qualProbs = qualProb(condExpValue, condVariance, 57);
-	plt.plot(t_A, qualProbs, label='Probability')
+	qualProbs = qualProb(condExpValue, condVar, 57);
+
+	# Plot
+	plt.plot(t_A, qualProbs, 'r', label='Probability')
 	plt.xlabel("t")
 	plt.ylabel("Probability")
 	plt.title("Probability of x(t) > 57. Conditional on (t_B, x_B(t))")
