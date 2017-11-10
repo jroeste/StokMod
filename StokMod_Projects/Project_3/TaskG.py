@@ -5,8 +5,24 @@ import matplotlib.pyplot as plt
 import random as rnd
 import scipy.stats as st 
 
-# Creating a mean vector and covariance matrix conditional on a datablock x_B
-# Input parameters
+# Construct input parameters
+def inputParameters1():
+	sigma = 4;
+	phi_m = 0.2;
+	t_A = np.linspace(10,80,141);
+	n = len(t_A);
+	t_B = [19.4, 29.7, 36.1, 50.7, 71.9];
+	x_B = [50.1, 39.1, 54.7, 42.1, 40.9];
+	mu_A = 50*np.ones(141);
+	mu_B = 50*np.ones(len(x_B));
+	return sigma, phi_m, t_A, n, t_B, x_B, mu_A, mu_B;
+
+def inputParameters2():
+	sigma, phi_m, t_A, n, t_B, x_B, mu_A, mu_B = inputParameters1();
+	t_B2 = [19.4, 29.7, 36.1, 40.7, 50.7, 71.9];
+	x_B2 = [50.1, 39.1, 54.7, 49.7, 42.1, 40.9];
+	mu_B2 = 50*np.ones(len(x_B2));
+	return sigma, phi_m, t_A, n, t_B2, x_B2, mu_A, mu_B2;
 
 # Constructs distance matrices
 def h(ta, tb):
@@ -15,7 +31,6 @@ def h(ta, tb):
 	onesa = np.ones(na);
 	onesb = np.ones(nb);
 	return abs(np.outer(ta, onesb) - np.outer(onesa, tb));
-
 
 def sample(tmin, tmax, nrPoints, avg, var):
 	n = nrPoints;
@@ -33,7 +48,6 @@ def sample(tmin, tmax, nrPoints, avg, var):
 # Returns Matern correlation function
 def corrMatern(h,sigma,phi):
 	return (sigma**2)*(1+phi*h)*np.exp(-phi*h)
-
 # Given to parameter blocks, function constructs distance and covariance matrices
 def matrixConstructor(t_A, t_B, sigma, phi):
 	H_A = h(t_A, t_A);
@@ -43,7 +57,6 @@ def matrixConstructor(t_A, t_B, sigma, phi):
 	S_B = corrMatern(H_B,sigma,phi);
 	S_AB = corrMatern(H_AB,sigma,phi);	
 	return S_A, S_B, S_AB
-
 # Given an array of expected values, variances and a limit; function returns probability of element i being greater than probLim
 def qualProb(expVal, Var, probLim):
 	# n = len(expVal);
@@ -52,16 +65,16 @@ def qualProb(expVal, Var, probLim):
 	qualProbs = 1 - st.norm.cdf(57, expVal, np.sqrt(Var));
 	return qualProbs;
 
-
 def G1():
 	# Assigment specific parameters
-	sigma = 4;
-	phi_m = 0.2;
-	t_A = np.linspace(10,80,141);
-	t_B = [19.4, 29.7, 36.1, 50.7, 71.9];
-	x_B = [50.1, 39.1, 54.7, 42.1, 40.9];
-	mu_A = 50*np.ones(141);
-	mu_B = 50*np.ones(len(x_B));
+	# sigma = 4;
+	# phi_m = 0.2;
+	# t_A = np.linspace(10,80,141);
+	# t_B = [19.4, 29.7, 36.1, 50.7, 71.9];
+	# x_B = [50.1, 39.1, 54.7, 42.1, 40.9];
+	# mu_A = 50*np.ones(141);
+	# mu_B = 50*np.ones(len(x_B));
+	sigma, phi_m, t_A, n, t_B, x_B, mu_A, mu_B = inputParameters1();
 
 	# Construct distance, and covariance matrices
 	S_A, S_B, S_AB = matrixConstructor(t_A, t_B, sigma, phi_m);
@@ -99,8 +112,8 @@ def G2():
 	phi_m = 0.2;
 	t_A = np.linspace(10,80,141);
 	n = len(t_A);
-	t_B = [19.4, 29.7, 36.1, 50.7, 71.9];
-	x_B = [50.1, 39.1, 54.7, 42.1, 40.9];
+	t_B = [19.4, 29.7, 36.1, 40.7, 50.7, 71.9];
+	x_B = [50.1, 39.1, 54.7, 49.7, 42.1, 40.9];
 	mu_A = 50*np.ones(141);
 	mu_B = 50*np.ones(len(x_B));
 
@@ -131,16 +144,16 @@ def G2():
 	plt.grid()
 	plt.show()
 
-
 def G3():
 	# Assignment specific parameters
-	sigma = 4;
-	phi_m = 0.2;
-	t_A = np.linspace(10,80,141);
-	t_B = [19.4, 29.7, 36.1, 40.7, 50.7, 71.9];
-	x_B = [50.1, 39.1, 54.7, 49.7, 42.1, 40.9];
-	mu_A = 50*np.ones(141);
-	mu_B = 50*np.ones(len(x_B));
+	# sigma = 4;
+	# phi_m = 0.2;
+	# t_A = np.linspace(10,80,141);
+	# t_B = [19.4, 29.7, 36.1, 40.7, 50.7, 71.9];
+	# x_B = [50.1, 39.1, 54.7, 49.7, 42.1, 40.9];
+	# mu_A = 50*np.ones(141);
+	# mu_B = 50*np.ones(len(x_B));
+	sigma, phi_m, t_A, n, t_B, x_B, mu_A, mu_B = inputParameters2();
 
 	# Construct distance, and covariance matrices
 	S_A, S_B, S_AB = matrixConstructor(t_A, t_B, sigma, phi_m);
@@ -172,6 +185,4 @@ def G3():
 	plt.grid()
 	plt.show()
 
-
-
-G2()
+G3()
