@@ -67,13 +67,6 @@ def qualProb(expVal, Var, probLim):
 
 def G1():
 	# Assigment specific parameters
-	# sigma = 4;
-	# phi_m = 0.2;
-	# t_A = np.linspace(10,80,141);
-	# t_B = [19.4, 29.7, 36.1, 50.7, 71.9];
-	# x_B = [50.1, 39.1, 54.7, 42.1, 40.9];
-	# mu_A = 50*np.ones(141);
-	# mu_B = 50*np.ones(len(x_B));
 	sigma, phi_m, t_A, n, t_B, x_B, mu_A, mu_B = inputParameters1();
 
 	# Construct distance, and covariance matrices
@@ -108,15 +101,7 @@ def G1():
 
 def G2():
 	# Assigment specific parameters
-	sigma = 4;
-	phi_m = 0.2;
-	t_A = np.linspace(10,80,141);
-	n = len(t_A);
-	t_B = [19.4, 29.7, 36.1, 40.7, 50.7, 71.9];
-	x_B = [50.1, 39.1, 54.7, 49.7, 42.1, 40.9];
-	mu_A = 50*np.ones(141);
-	mu_B = 50*np.ones(len(x_B));
-
+	sigma, phi_m, t_A, n, t_B, x_B, mu_A, mu_B = inputParameters1();
 	
 	# Construct distance, and covariance matrices
 	S_A, S_B, S_AB = matrixConstructor(t_A, t_B, sigma, phi_m);
@@ -146,25 +131,33 @@ def G2():
 
 def G3():
 	# Assignment specific parameters
-	# sigma = 4;
-	# phi_m = 0.2;
-	# t_A = np.linspace(10,80,141);
-	# t_B = [19.4, 29.7, 36.1, 40.7, 50.7, 71.9];
-	# x_B = [50.1, 39.1, 54.7, 49.7, 42.1, 40.9];
-	# mu_A = 50*np.ones(141);
-	# mu_B = 50*np.ones(len(x_B));
 	sigma, phi_m, t_A, n, t_B, x_B, mu_A, mu_B = inputParameters2();
 
 	# Construct distance, and covariance matrices
 	S_A, S_B, S_AB = matrixConstructor(t_A, t_B, sigma, phi_m);
 
-	# Calculate conditional expected valuea and variance
+	# Calculate conditional expected value and variance
 	mult1 = np.matmul(S_AB,np.linalg.inv(S_B));
 	mult2 = np.matmul(mult1,x_B-mu_B);
 	condExpValue = mu_A + mult2
 	mult3 = np.matmul(S_AB,np.linalg.inv(S_B))
 	mult4 = np.matmul(mult3,np.matrix.transpose(S_AB))
 	condVariance = S_A - mult4;
+	condVar = np.zeros(n);
+	for i in range (0,n):
+		condVar[i] = condVariance[i,i];
+
+	# Calculate the probability of quality being greater than 57 for a certain temp
+	qualProbs = qualProb(condExpValue, condVar, 57);
+
+	# Plot probability of x > 57
+	plt.plot(t_A, qualProbs, 'r', label='Probability')
+	plt.xlabel("t")
+	plt.ylabel("Probability")
+	plt.title("Probability of x(t) > 57. Conditional on (t_B, x_B(t))")
+	plt.legend()
+	plt.grid()
+	plt.show()
 
 	# Calculate 90% conditional prediction interval. 
 	n = len(condExpValue)
@@ -184,5 +177,3 @@ def G3():
 	plt.legend()
 	plt.grid()
 	plt.show()
-
-G3()
