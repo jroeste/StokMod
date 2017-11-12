@@ -1,6 +1,8 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
+SAVEFIG = 0;
+
 def h(ta, tb):
 	#t = np.linspace(tmin, tmax, n);
 	na = len(ta);
@@ -21,7 +23,7 @@ def samplemodel(t, mu, sigma, phi):
 
 def samplecondmodel(ta, xb, tb, mua, sigma, phi):
 	na = len(ta);
-	mu, S = condexpvar(ta, xb, tb, sigma, phi);	
+	mu, S = condexpvar(ta, xb, tb, mua, sigma, phi);	
 	L = np.linalg.cholesky(S);
 
 	z = np.random.normal(0, 1, na);
@@ -30,7 +32,7 @@ def samplecondmodel(ta, xb, tb, mua, sigma, phi):
 def expocor(H, sigma, phi):
 	return sigma**2 * np.exp(-phi*H);
 	
-def condexpvar(ta, xb, tb, sigma, phi):
+def condexpvar(ta, xb, tb, mua, sigma, phi):
 	Ha = h(ta, ta);
 	Hb = h(tb, tb);
 	Hab = h(ta, tb);	
@@ -38,10 +40,17 @@ def condexpvar(ta, xb, tb, sigma, phi):
 	Sb = expocor(Hb, sigma, phi);
 	Sab = expocor(Hab, sigma, phi);
 	tmp = np.matmul(Sab, np.linalg.inv(Sb));
-	mu = np.matmul(tmp, xb);
+	mu = mua + np.matmul(tmp, xb);
 	S = Sa - np.matmul(tmp, np.transpose(Sab));
 	return mu, S;
 
+def plot_save(plot, fname):
+	if SAVEFIG:
+		plt.savefig(fname);
+		plt.clf();
+	else:
+		plt.title('Histogram of Cost:');
+		plt.show();
 def testf1():
 	mu = 0;
 	sigma = 1;
@@ -57,12 +66,12 @@ def testf1():
 		phi = 3/10;
 		z[i,:] = samplemodel(t, mu, sigma, phi);
 		plt.plot(t, z[i,:]);
-	plt.show();
+	plot_save(plt, 'f11.pdf');
 	for i in range(N):
 		phi = 3/30;
 		z[i,:] = samplemodel(t, mu, sigma, phi);
 		plt.plot(t, z[i,:]);
-	plt.show();
+	plot_save(plt, 'f12.pdf');
 testf1();
 
 def testf2():
@@ -84,10 +93,17 @@ def testf2():
 		phi = 3/10;
 		z[i,:] = samplecondmodel(ta, xb, tb, mua, sigma, phi);
 		plt.plot(ta, z[i,:]);
-	plt.show();
+	mu, S = condexpvar(ta, xb, tb, mua, sigma, phi);
+	plt.plot(ta, mu, 'k--');
+	plt.plot(tb, xb, 'kx');
+	plot_save(plt, 'f21.pdf');
 	for i in range(N):
 		phi = 3/30;
 		z[i,:] = samplecondmodel(ta, xb, tb, mua, sigma, phi);
 		plt.plot(ta, z[i,:]);
-	plt.show();
+	mu, S = condexpvar(ta, xb, tb, mua, sigma, phi);
+	plt.plot(ta, mu, 'k--');
+	plt.plot(tb, xb, 'kx');
+	plot_save(plt, 'f22.pdf');
+
 testf2();
