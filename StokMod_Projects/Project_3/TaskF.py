@@ -71,7 +71,6 @@ def F1():
 		z[i,:] = samplemodel(t, mu, sigma, phi);
 		plt.plot(t, z[i,:]);
 	plot_save(plt, 'f12.pdf');
-F1();
 
 def F2():
 	xb = np.array([0.58, -1.34, 0.61]);
@@ -105,4 +104,3 @@ def F2():
 	plt.plot(tb, xb, 'kx');
 	plot_save(plt, 'f22.pdf');
 
-F2();
