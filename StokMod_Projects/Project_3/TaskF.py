@@ -49,9 +49,8 @@ def plot_save(plot, fname):
 		plt.savefig(fname);
 		plt.clf();
 	else:
-		plt.title('Histogram of Cost:');
 		plt.show();
-def testf1():
+def F1():
 	mu = 0;
 	sigma = 1;
 
@@ -72,9 +71,9 @@ def testf1():
 		z[i,:] = samplemodel(t, mu, sigma, phi);
 		plt.plot(t, z[i,:]);
 	plot_save(plt, 'f12.pdf');
-testf1();
+F1();
 
-def testf2():
+def F2():
 	xb = np.array([0.58, -1.34, 0.61]);
 	tb = np.array([11.2, 51.8, 81.4]);
 
@@ -106,4 +105,4 @@ def testf2():
 	plt.plot(tb, xb, 'kx');
 	plot_save(plt, 'f22.pdf');
 
-testf2();
+F2();
